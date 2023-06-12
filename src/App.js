@@ -1,8 +1,11 @@
-import './App.css';
 import { useState } from 'react' 
 import CitySearch from './components/CitySearch';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { AirQualityCard } from './components/AirQuaiityChecker';
+import { AirQualityLevelsTable } from './components/AirQualityLevelsTable'
+import './App.css';
+import { PollutantInfoCard } from './components/PollutantInfo';
+
 //TODO: api  to offer potential misspelling corrects
 //      D3 heatmap
 //      redo in material UI
@@ -48,8 +51,11 @@ function App() {
     {airQualityData && (
       <>
         <AirQualityCard data={airQualityData}/>
+        <PollutantInfoCard pollutant={airQualityData.dominentpol} />
       </>
     )}
+        <AirQualityLevelsTable />
+
    </div>
   );
 }
