@@ -5,11 +5,13 @@ import { AirQualityCard } from './components/AirQuaiityChecker';
 import { AirQualityLevelsTable } from './components/AirQualityLevelsTable'
 import './App.css';
 import { PollutantInfoCard } from './components/PollutantInfo';
+import  {Map}  from './components/Map'
 
 //TODO: api  to offer potential misspelling corrects
 //      D3 heatmap
 //      redo in material UI
 //      integrate testing 
+//      make accounts to save specific locations. if air quality worse than chosen point, send an email about air quality ONCE A DAY
 
 
 
@@ -31,7 +33,9 @@ function App() {
     catch (error) {
       console.error(`network error: ${error}`)
       //set error state
+      setError(true)
       //set air quality data to null
+      setAirQualityData(null)
     }
   }
 
@@ -40,6 +44,7 @@ function App() {
 
   return (
    <div className='container'>
+    <Map/>
     <h1 className='mt-5 mb-3'>Air Quality Index Checker</h1>
     <CitySearch getAirQuality={getAirQuality} />
     {error && (
