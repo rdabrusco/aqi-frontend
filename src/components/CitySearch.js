@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 
-const CitySearch = ({getAirQuality}) => {
+const CitySearch = ({getAirQuality, getLocationByIp}) => {
     const [query, setQuery] = useState('')
 
     const handleChange = (e) => setQuery(e.target.value)
@@ -14,12 +14,18 @@ const CitySearch = ({getAirQuality}) => {
 
     }
 
+    const handleSubmitIp = (e) => {
+        e.preventDefault()
+        getLocationByIp()
+
+    }
+
     return (
         <form onSubmit={handleSubmit} className='mb-4'>
             <input value={query} placeholder='Enter city...' className='form-control' onChange={handleChange} type="text"></input>
             <button type='submit' className='btn btn-primary mt-3'>Submit</button>
-            <p className='mt-3'>Or</p>
-            <button type='submit' className='btn btn-primary mt-3'>Check via IP </button>
+            <span className='mt-3'>Or</span>
+            <button type='submit' onClick={handleSubmitIp} className='btn btn-primary mt-3'>Nearest Location</button>
         </form>
     )
 }

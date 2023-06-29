@@ -17,6 +17,19 @@ import  {Map}  from './components/Map'
 
 function App() {
 
+  const getLocationByIp = async () => {
+    const response = await fetch(`https://api.waqi.info/feed/here/?token=${process.env.REACT_APP_AQI_API_TOKEN}`)
+    const data = await response.json()
+    console.log(data)
+    if(response.ok && data.status === 'ok'){
+      setAirQualityData(data.data)
+      setError(false)
+    }else{
+      setError(true)
+      setAirQualityData(null)
+    }
+  }
+
   const  getAirQuality = async (city) => {
     try{
       const response = await fetch(`https://api.waqi.info/feed/${city}/?token=${process.env.REACT_APP_AQI_API_TOKEN}`)
@@ -46,7 +59,7 @@ function App() {
    <div className='container'>
     {/* <Map/> */}
     <h1 className='mt-5 mb-3'>Air Quality Index Checker</h1>
-    <CitySearch getAirQuality={getAirQuality} />
+    <CitySearch getLocationByIp={getLocationByIp} getAirQuality={getAirQuality} />
     {error && (
       <div className='alert alert-danger'
       role='alert'>
