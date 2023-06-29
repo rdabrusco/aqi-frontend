@@ -44,7 +44,7 @@ function App() {
 
   return (
    <div className='container'>
-    <Map/>
+    {/* <Map/> */}
     <h1 className='mt-5 mb-3'>Air Quality Index Checker</h1>
     <CitySearch getAirQuality={getAirQuality} />
     {error && (

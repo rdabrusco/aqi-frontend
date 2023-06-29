@@ -18,6 +18,8 @@ const CitySearch = ({getAirQuality}) => {
         <form onSubmit={handleSubmit} className='mb-4'>
             <input value={query} placeholder='Enter city...' className='form-control' onChange={handleChange} type="text"></input>
             <button type='submit' className='btn btn-primary mt-3'>Submit</button>
+            <p className='mt-3'>Or</p>
+            <button type='submit' className='btn btn-primary mt-3'>Check via IP </button>
         </form>
     )
 }
