@@ -36,6 +36,7 @@ function App() {
       const data = await response.json()
       console.log(data)
       if(response.ok && data.status === 'ok'){
+        // updates airQualityData state and error state
         setAirQualityData(data.data)
         setError(false)
       }else{
@@ -57,6 +58,7 @@ function App() {
 
   return (
    <div className='container'>
+    {/* Currently not implemented, issues with gradient always being maximum, and disappearing on scroll */}
     {/* <Map/> */}
     <h1 className='mt-5 mb-3'>Air Quality Index Checker</h1>
     <CitySearch getLocationByIp={getLocationByIp} getAirQuality={getAirQuality} />
@@ -66,6 +68,7 @@ function App() {
         Uh oh, an error has occurred! Good luck!
       </div>
     )}
+    {/* only display this if airQualityData has been fetched */}
     {airQualityData && (
       <>
         <AirQualityCard data={airQualityData}/>

@@ -1,4 +1,5 @@
 export const PollutantInfoCard = ({pollutant}) => {
+    // receives a string that is the pollutant, and returns the appropriate description string. 
     const getPollutantInfo = (pollutant) => {
         switch (pollutant) {
             case 'pm25':
