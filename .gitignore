@@ -25,3 +25,5 @@ yarn-error.log*
 
 # files
 /src/components/Map2.js
+/src/components/UserComponent.js
+

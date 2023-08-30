@@ -15,24 +15,17 @@ export const Map = () => {
     const zoomLevel = 13
     const [mapData, setMapData] = useState([])
 
+    // fetches the heatmap data from the API and returns an array of arrays that contain 
+    // the lon, lat, and air quality indexes of all the queried area
     const fetchHeatmapData = async () => {
         const response = await fetch(`https://api.waqi.info/v2/map/bounds?latlng=19.5,-161.75583,64.85694,-68.01197&networks=all&token=${process.env.REACT_APP_AQI_API_TOKEN}`)
         const data = await response.json()
         const rawData = data.data
+        // takes only the properties of the object that are needed for the heatmap
         const mappedData = rawData.map(({lat, lon, aqi }) => ({lat, lon, aqi}))
         const actualData = mappedData.map(i => {
-            // return ({
-            //     lat: i.lat,
-            //     lon: i.lon,
-            //     aqi: +i.aqi
-            // })
             return [i.lat, i.lon, +i.aqi]
         })
-        // console.log(`${actualData}`)
-        // console.log(JSON.stringify(actualData, null, 2));
-        // const finalData = JSON.stringify(actualData, null, 2);
-        // console.log(typeof actualData)
-
 
         return actualData
     }
@@ -44,7 +37,6 @@ export const Map = () => {
         fetchHeatmapData().then((data) => {
             console.log('running')
             setMapData(data.slice(0, 100))
-            // console.log(`mapData type: ${mapData}`)
 
         })
 
