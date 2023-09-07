@@ -28,9 +28,9 @@ const CitySearch = ({getAirQuality, getLocationByIp}) => {
     return (
         <form onSubmit={handleSubmit} className='mb-4'>
             <input value={query} placeholder='Enter city...' className='form-control' onChange={handleChange} type="text"></input>
-            <div className='w-auto'>
+            <div className='w-auto flex space-around'>
                 <button type='submit' className='btn btn-primary mt-3 w-25'>Submit</button>
-                <span className='mt-3 w-25'>Or</span>
+                <span className='mt-3 w-25 text-center'>Or</span>
                 <button type='submit' onClick={handleSubmitIp} className='btn btn-primary mt-3 w-25'>Nearest Location</button>
             </div>
             

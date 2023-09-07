@@ -1,23 +1,8 @@
 
-const getCardColor = (aqi) => {
-  // sets the card background color based off of the aqi 
-    if (aqi <= 50) {
-      return 'bg-success text-white';
-    } else if (aqi <= 100) {
-      return 'bg-warning';
-    } else if (aqi <= 150) {
-      return 'bg-orange';
-    } else if (aqi <= 200) {
-      return 'bg-danger text-white';
-    } else if (aqi <= 300) {
-      return 'bg-very-unhealthy text-white';
-    } else {
-      return 'bg-hazardous ';
-    }
-  }
 
 
-export const AirQualityCard = ({data}) => {
+
+export const AirQualityCard = ({data, getCardColor}) => {
   // destructuring data object into what is needed for the card
     const {aqi, city, dominentpol, time} = data
     const cardColor = getCardColor(aqi)

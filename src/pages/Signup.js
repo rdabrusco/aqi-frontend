@@ -16,6 +16,7 @@ import {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import DrawerAppBar from '../components/DrawerAppBar';
 
 
 function Copyright(props) {
@@ -35,7 +36,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
+export default function SignUp({currentUser, handleLogout}) {
     const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     email: "",
@@ -106,6 +107,8 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <DrawerAppBar user={currentUser} handleLogout={handleLogout} />
+
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div>

@@ -15,7 +15,7 @@ import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import axios from "axios";
+import DrawerAppBar from '../components/DrawerAppBar';
 
 
 
@@ -38,7 +38,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function LogIn() {
+export default function LogIn({currentUser, handleLogout}) {
 
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
@@ -117,7 +117,10 @@ export default function LogIn() {
   };
 
   return (
+    
     <ThemeProvider theme={defaultTheme}>
+   <DrawerAppBar user={currentUser} handleLogout={handleLogout} />
+
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useCookies } from "react-cookie";
 import CitySearch from './components/CitySearch';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { AirQualityCard } from './components/AirQuaiityChecker';
+import { AirQualityCard } from './components/AirQualityChecker';
 import { AirQualityLevelsTable } from './components/AirQualityLevelsTable'
 import { TrackedLocationsTable } from './components/TrackedLocationsTable'
 import './App.css';
@@ -10,6 +10,8 @@ import { PollutantInfoCard } from './components/PollutantInfo';
 import { Link, useNavigate } from 'react-router-dom'
 import  UserComponent  from './components/UserComponent'
 import { ToastContainer, toast } from "react-toastify";
+import PersistentDrawerLeft from './components/AppBar';
+import DrawerAppBar from './components/DrawerAppBar';
 
 // import  {Map}  from './components/Map'
 
@@ -27,20 +29,14 @@ function App() {
 
   const [error, setError] = useState(false)
   const [airQualityData, setAirQualityData] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+
 
   const navigate = useNavigate();
   const [cookies, removeCookie] = useCookies([]);
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
     const verifyCookie = async () => {
-      // if (!cookies.token) {
-      //   navigate("/login");
-      // }
-      // const { data } = await axios.post(
-      //   "http://localhost:4000",
-      //   {},
-      //   { withCredentials: true }
-      // );
       console.log(`cookie: ${cookies.token}`)
       const data = await fetch("http://localhost:8080/", {
         method: "POST",
@@ -54,13 +50,15 @@ function App() {
       console.log(resolvedData)
       const { status, user } = resolvedData;
       console.log(`data: ${data}, status: ${status}, user: ${user}`)
+      if(user){
       console.log(user.trackedLocations)
+      }
       setCurrentUser(user);
-      // return status
-      //   ? toast(`Hello ${user}`, {
-      //       position: "top-right",
-      //     })
-      //   : (removeCookie("token"), navigate("/login"));
+      return status
+        ? toast(`Hello ${user.email}`, {
+            position: "top-right",
+          })
+        : (removeCookie("token"));
     };
     verifyCookie();
   }, [cookies, navigate, removeCookie]);
@@ -101,41 +99,30 @@ function App() {
     }
   }
 
-  const Logout = () => {
-    removeCookie("token");
-    navigate("/login");
-  };
-
     const handleLogout = async () => {
       removeCookie("token")
       navigate("/login")
-      // try{
-      //   const response = await fetch("http://localhost:8080/logout")
-      //   const data = await response.json()
-      //   console.log(data)
-      //   if(response.ok && data.status === 'ok'){
-      //     setAirQualityData(data.data)
-      //     setError(false)
-      //   }else{
-      //     setError(true)
-      //     setAirQualityData(null)
-      //   }
-      // }catch(err) {
-      //   console.error(`network error: ${error}`)
-      //   //set error state
-      //   setError(true)
-      //   //set air quality data to null
-      //   setAirQualityData(null)
-      // }
     }
+
+    
     
     const addCurrentLocation = async (e) => {
       e.preventDefault()
-      const currentLocation = {
-        name: airQualityData.city.name,
-        lat: airQualityData.city.geo[0],
-        lon: airQualityData.city.geo[1]
+      if(airQualityData) {
+        var currentLocation = {
+          name: airQualityData.city.name,
+          lat: airQualityData.city.geo[0],
+          lon: airQualityData.city.geo[1]
+        }
       }
+      //  else if(trackedData) {
+      //   var currentLocation = {
+      //     name: trackedData.name,
+      //     lat: trackedData.lat,
+      //     lon: trackedData.lon
+      //   }
+      // }
+      
       console.log(currentLocation)
       try{
         const response = await fetch("http://localhost:8080/editTrackedLocations", {
@@ -172,26 +159,49 @@ function App() {
       }
     }
 
-    const handleMe = async () => {
-      try{
-        const response = await fetch("http://localhost:8080/")
-        const data = await response.json()
-        console.log(data)
-        if(response.ok && data.status === 'ok'){
-          setAirQualityData(data.data)
-          setError(false)
-        }else{
-          setError(true)
-          setAirQualityData(null)
+
+    const getCardColor = (aqi) => {
+      // sets the card background color based off of the aqi 
+        if (aqi <= 50) {
+          return 'bg-success text-white';
+        } else if (aqi <= 100) {
+          return 'bg-warning';
+        } else if (aqi <= 150) {
+          return 'bg-orange';
+        } else if (aqi <= 200) {
+          return 'bg-danger text-white';
+        } else if (aqi <= 300) {
+          return 'bg-very-unhealthy text-white';
+        } else {
+          return 'bg-hazardous ';
         }
-      }catch(err) {
-        console.error(`network error: ${error}`)
-        //set error state
-        setError(true)
-        //set air quality data to null
-        setAirQualityData(null)
       }
-    } 
+
+    const [trackedData, setTrackedData] = useState(null)
+
+    const getAllTrackedData = async () => {
+        let allTrackedData = []
+        console.log(`testing getting all tracked data`)
+        console.log(currentUser.trackedLocations)
+        for(let location of currentUser.trackedLocations){
+            // console.log(location)
+            try{
+                const response = await fetch(`https://api.waqi.info/feed/geo:${location.lat};${location.lon}/?token=${process.env.REACT_APP_AQI_API_TOKEN}`)
+                const data = await response.json()
+                console.log(data)
+                allTrackedData.push({
+                    name: location.name,
+                    aqi: data.data.aqi
+                })
+            } catch(err){
+                console.log(err)
+            }
+        }
+
+        setTrackedData(allTrackedData)
+        setIsLoading(false)
+        
+    }
 
   
 
@@ -200,13 +210,12 @@ function App() {
 
 
   return (
+  <>
+   {/* <PersistentDrawerLeft /> */}
+   <DrawerAppBar user={currentUser} handleLogout={handleLogout} />
    <div className='container'>
     {/* <UserComponent /> */}
-    <button type='submit' onClick={handleLogout} className='btn btn-primary mt-3 w-10'>Logout</button>
-    <button type='submit' onClick={handleLogout} className='btn btn-primary mt-3 w-10'>Me</button>
-    <Link to={`/login`}>Login</Link>
-    <Link to={`/signup`}>Sign Up</Link>
-    <a href={"http://"}></a>
+
 
     {/* Currently not implemented, issues with gradient always being maximum, and disappearing on scroll */}
     {/* <Map/> */}
@@ -218,21 +227,28 @@ function App() {
         Uh oh, an error has occurred! Good luck!
       </div>
     )}
+    {currentUser && (
+          <button type="submit" onClick={addCurrentLocation}>{airQualityData && currentUser.trackedLocations.some(array => array.name === (airQualityData.city.name)) ? "Remove" : "Save"} Current location</button>
+        )}
     {/* only display this if airQualityData has been fetched */}
     {airQualityData && (
       <>
-        {currentUser && (
-          <button type="submit" onClick={addCurrentLocation}>{currentUser.trackedLocations.some(array => array.name === (airQualityData.city.name)) ? "Remove" : "Save"} Current location</button>
-        )}
         
-        <AirQualityCard data={airQualityData}/>
+        
+        <AirQualityCard getCardColor={getCardColor} data={airQualityData}/>
         <PollutantInfoCard pollutant={airQualityData.dominentpol} />
-        <TrackedLocationsTable trackedLocations={currentUser.trackedLocations} />
+        
       </>
+    )}
+
+    {currentUser && (
+      <TrackedLocationsTable trackedData={trackedData} setTrackedData={setTrackedData} getAllTrackedData={getAllTrackedData} getCardColor={getCardColor} addCurrentLocation={addCurrentLocation} currentUser={currentUser} setCurrentUser={setCurrentUser} isLoading={isLoading} setIsLoading={setIsLoading} />
     )}
         <AirQualityLevelsTable />
     <ToastContainer />
    </div>
+  </>
+  
   );
 
 }

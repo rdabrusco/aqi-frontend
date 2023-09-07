@@ -10,7 +10,50 @@
   background-color: #7E0023;
 }
 
+.table .bg-orange {
+  background-color: #FFA500;
+}
+
+.table .bg-very-unhealthy {
+  background-color: #800080;
+}
+
+.table .bg-hazardous {
+  background-color: #7E0023;
+}
+
 .leaflet-container {
   width: 100%;
   height: 80vh;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.space-around {
+  justify-content: space-around;
+}
+
+.close-btn {
+  position: absolute;
+  right: -2px;
+  color: black;
+}
+
+
+@media screen and (max-width: 380px){
+  .flex {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .flex * {
+    width: 100% !important;
+  }
+
 }
