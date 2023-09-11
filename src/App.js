@@ -30,6 +30,8 @@ function App() {
   const [error, setError] = useState(false)
   const [airQualityData, setAirQualityData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isPending, setIsPending] = useState(false)
+
 
 
   const navigate = useNavigate();
@@ -141,9 +143,49 @@ function App() {
           ...currentUser,
           trackedLocations: res.trackedLocations
         })
+        toast(`Successfully updated tracked locations`, {
+          position: "bottom-left",
+        })
       } catch(err){
         console.log(err)
       }
+
+    }
+
+    const updateSendEmail = async () => {
+      try{
+        const response = await fetch("http://localhost:8080/updateSendEmail", {
+          method: "PUT",
+          credentials: "include",
+          body: JSON.stringify({
+            sendEmail: currentUser.sendEmail
+          }),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        const res = await response.json()
+        console.log(res)
+        setCurrentUser({
+          ...currentUser,
+          sendEmail: res.sendEmail
+        })
+
+        toast(`Successfully updated email alert preference`, {
+          position: "bottom-left",
+        })
+        
+      } catch(err){
+        console.log(err)
+      }
+    }
+
+    const handleChange = async () => {
+
+      // setIsPending(true)
+      await updateSendEmail()
+      // setIsPending(false)
+      
 
     }
 
@@ -184,7 +226,7 @@ function App() {
         console.log(`testing getting all tracked data`)
         console.log(currentUser.trackedLocations)
         for(let location of currentUser.trackedLocations){
-            // console.log(location)
+            console.log(location)
             try{
                 const response = await fetch(`https://api.waqi.info/feed/geo:${location.lat};${location.lon}/?token=${process.env.REACT_APP_AQI_API_TOKEN}`)
                 const data = await response.json()
@@ -203,6 +245,8 @@ function App() {
         
     }
 
+
+
   
 
 
@@ -211,10 +255,8 @@ function App() {
 
   return (
   <>
-   {/* <PersistentDrawerLeft /> */}
    <DrawerAppBar user={currentUser} handleLogout={handleLogout} />
    <div className='container'>
-    {/* <UserComponent /> */}
 
 
     {/* Currently not implemented, issues with gradient always being maximum, and disappearing on scroll */}
@@ -227,7 +269,7 @@ function App() {
         Uh oh, an error has occurred! Good luck!
       </div>
     )}
-    {currentUser && (
+    {currentUser && airQualityData && (
           <button type="submit" onClick={addCurrentLocation}>{airQualityData && currentUser.trackedLocations.some(array => array.name === (airQualityData.city.name)) ? "Remove" : "Save"} Current location</button>
         )}
     {/* only display this if airQualityData has been fetched */}
@@ -242,7 +284,13 @@ function App() {
     )}
 
     {currentUser && (
-      <TrackedLocationsTable trackedData={trackedData} setTrackedData={setTrackedData} getAllTrackedData={getAllTrackedData} getCardColor={getCardColor} addCurrentLocation={addCurrentLocation} currentUser={currentUser} setCurrentUser={setCurrentUser} isLoading={isLoading} setIsLoading={setIsLoading} />
+      <>
+       <input type="checkbox" name="sendEmail" checked={currentUser.sendEmail} onChange={handleChange} disabled={isPending} />
+       <label htmlFor="sendEmail">Send Email Updates?</label>
+      
+       <TrackedLocationsTable trackedData={trackedData} setTrackedData={setTrackedData} getAllTrackedData={getAllTrackedData} getCardColor={getCardColor} addCurrentLocation={addCurrentLocation} currentUser={currentUser} setCurrentUser={setCurrentUser} isLoading={isLoading} setIsLoading={setIsLoading} />
+      </>
+     
     )}
         <AirQualityLevelsTable />
     <ToastContainer />
