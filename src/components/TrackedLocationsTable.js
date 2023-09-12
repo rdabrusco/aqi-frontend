@@ -62,9 +62,9 @@ export const TrackedLocationsTable = ({trackedData, getAllTrackedData, getCardCo
                         </thead>
                         <tbody>
                             
-                            {trackedData && (trackedData.map(({name, aqi}, index) => (
+                            {trackedData && (trackedData.map(({location, aqi}, index) => (
                                 <tr  key={index}>
-                                    <td className={getCardColor(aqi)} >{name}</td>
+                                    <td className={getCardColor(aqi)} >{location}</td>
                                     <td className={getCardColor(aqi)}>{aqi} 
                                     <CloseIcon className="close-btn" fontSize="small" onClick={() => handleClick(index)} />
                                     </td>
