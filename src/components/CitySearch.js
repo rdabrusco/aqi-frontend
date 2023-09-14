@@ -19,9 +19,10 @@ const CitySearch = ({getAirQuality, getLocationByIp}) => {
 
     }
 
+    
+    // runs location api call
     const handleSubmitIp = (e) => {
         e.preventDefault()
-        // runs location api call
         getLocationByIp()
 
     }

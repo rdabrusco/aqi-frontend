@@ -18,11 +18,13 @@ import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
-
+// Top nav app bar
 function DrawerAppBar(props) {
   const { window, user, handleLogout } = props;
+  // if user is signed in
   if(user) {
     var navItems = [{title: 'Home', nav: '/'},  {title: "Logout", nav:"/"}]
+    // shows if not signed in
   } else{
     var navItems = [{title: 'Home', nav: '/'}, {title: "Sign Up", nav: "/signup"}, {title: "Login", nav:"/login"}]
   }
