@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Button from '@mui/material/Button';
 
 
 const CitySearch = ({getAirQuality, getLocationByIp}) => {
@@ -29,9 +30,9 @@ const CitySearch = ({getAirQuality, getLocationByIp}) => {
         <form onSubmit={handleSubmit} className='mb-4'>
             <input value={query} placeholder='Enter city...' className='form-control' onChange={handleChange} type="text"></input>
             <div className='w-auto flex space-around'>
-                <button type='submit' className='btn btn-primary mt-3 w-25'>Submit</button>
+                <Button variant='contained' type='submit' className='btn btn-primary mt-3 w-25'>Submit</Button>
                 <span className='mt-3 w-25 text-center'>Or</span>
-                <button type='submit' onClick={handleSubmitIp} className='btn btn-primary mt-3 w-25'>Nearest Location</button>
+                <Button variant="contained" type='submit' onClick={handleSubmitIp} className='btn btn-primary mt-3 w-25'>Nearest Location</Button>
             </div>
             
         </form>

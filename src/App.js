@@ -7,13 +7,10 @@ import { AirQualityLevelsTable } from './components/AirQualityLevelsTable'
 import { TrackedLocationsTable } from './components/TrackedLocationsTable'
 import './App.css';
 import { PollutantInfoCard } from './components/PollutantInfo';
-import { Link, useNavigate } from 'react-router-dom'
-import  UserComponent  from './components/UserComponent'
+import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from "react-toastify";
-import PersistentDrawerLeft from './components/AppBar';
 import DrawerAppBar from './components/DrawerAppBar';
 import Button from '@mui/material/Button';
-import emailjs from '@emailjs/browser';
 
 // import  {Map}  from './components/Map'
 
@@ -32,7 +29,6 @@ function App() {
   const [error, setError] = useState(false)
   const [airQualityData, setAirQualityData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [isPending, setIsPending] = useState(false)
 
 
 
@@ -184,24 +180,11 @@ function App() {
 
     const handleChange = async () => {
 
-      // setIsPending(true)
       await updateSendEmail()
-      // setIsPending(false)
       
 
     }
 
-    function updateArray(arrays, newArray) {
-      const exists = arrays.some(array => JSON.stringify(array) === JSON.stringify(newArray));
-    
-      if (exists) {
-        console.log(`location already in array removing location`)
-        return arrays.filter(array => JSON.stringify(array) !== JSON.stringify(newArray));
-      } else {
-        console.log(`location not in array, adding location`)
-        return [].concat(arrays,[newArray]);
-      }
-    }
 
 
     const getCardColor = (aqi) => {
@@ -247,61 +230,8 @@ function App() {
         
     }
 
-    const sendEmail = async () => {
-      console.log('sending email')
-      const content = createTable(trackedData)
-      console.log(content)
-      const templateParams = {
-        to_name: currentUser.email,
-        html_table: content,
-      }
-      try {
-        const response = await emailjs.send('aqi_checker', 'template_jhf575h', templateParams, "yDYPkupX-ipPiri9A");
-        console.log('SUCCESS!', response.status, response.text);
-      } catch (error) {
-        console.log('FAILED...', error);
-      }
-    }
 
-
-    // Create an HTML table dynamically from the array of objects
-function createTable(data) {
-  let tableHtml = '<table border="1"><thead><tr>';
-  const colorMapping = {
-    'bg-success': 'background-color: #00FF00; color: #000000' ,
-    'bg-warning': 'background-color: #FFFF00;  color: #000000',
-    'bg-orange': 'background-color: #FFA500;  color: #000000',
-    'bg-danger': 'background-color: #FF0000; color: #FFFFFF;',
-    'bg-very-unhealthy': 'background-color: #800080; color: #FFFFFF;',
-    'bg-hazardous': 'background-color: #7E0023; color: #FFFFFF;',
-  };
-  // Create table header row using the keys of the first object in the array
-  const keys = Object.keys(data[0]);
-  keys.forEach((key) => {
-    tableHtml += `<th>${key}</th>`;
-  });
-
-  tableHtml += '</tr></thead><tbody>';
-
-  // Create table rows with data from each object in the array
-  data.forEach((item) => {
-       // Get the background color based on the AQI value
-       const backgroundColor = getCardColor(item.aqi);
-
-       // Add the style attribute to the <tr> element with the background color
-       tableHtml += `<tr style=" ${colorMapping[backgroundColor.split(" ")[0]]};">`;
-   
-    keys.forEach((key) => {
-      tableHtml += `<td>${item[key]}</td>`;
-    });
-    tableHtml += '</tr>';
-  });
-
-  tableHtml += '</tbody></table>';
-
-  return tableHtml;
-}
-
+ 
 
 
   
@@ -315,10 +245,7 @@ function createTable(data) {
    <DrawerAppBar user={currentUser} handleLogout={handleLogout} />
    <div className='container'>
 
-
-    {/* Currently not implemented, issues with gradient always being maximum, and disappearing on scroll */}
-    {/* <Map/> */}
-    <h1 className='mt-5 mb-3'>Air Quality Index Checker</h1>
+    <h1 className='mt-5 mb-3 text-center'>Air Quality Index Checker</h1>
     <CitySearch getLocationByIp={getLocationByIp} getAirQuality={getAirQuality} />
     {error && (
       <div className='alert alert-danger'
@@ -327,7 +254,7 @@ function createTable(data) {
       </div>
     )}
     {currentUser && airQualityData && (
-          <button type="submit" onClick={addCurrentLocation}>{airQualityData && currentUser.trackedLocations.some(array => array.name === (airQualityData.city.name)) ? "Remove" : "Save"} Current location</button>
+          <Button variant="contained" type="submit" onClick={addCurrentLocation}>{airQualityData && currentUser.trackedLocations.some(array => array.name === (airQualityData.city.name)) ? "Remove" : "Save"} Current location</Button>
         )}
     {/* only display this if airQualityData has been fetched */}
     {airQualityData && (
@@ -342,9 +269,9 @@ function createTable(data) {
 
     {currentUser && (
       <>
-       <input type="checkbox" name="sendEmail" checked={currentUser.sendEmail} onChange={handleChange} disabled={isPending} />
+       <input type="checkbox" name="sendEmail" checked={currentUser.sendEmail} onChange={handleChange} />
        <label htmlFor="sendEmail">Send Email Updates?</label>
-       <Button onClick={sendEmail} variant="contained">Send Email</Button>
+      
 
       
        <TrackedLocationsTable trackedData={trackedData} setTrackedData={setTrackedData} getAllTrackedData={getAllTrackedData} getCardColor={getCardColor} addCurrentLocation={addCurrentLocation} currentUser={currentUser} setCurrentUser={setCurrentUser} isLoading={isLoading} setIsLoading={setIsLoading} />

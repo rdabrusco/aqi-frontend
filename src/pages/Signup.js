@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -43,7 +43,7 @@ export default function SignUp({currentUser, handleLogout}) {
     password: "",
     confirmPassword: ""
   });
-  const { email, password, confirmPassword } = inputValue;
+  const { password, confirmPassword } = inputValue;
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputValue({
@@ -69,6 +69,16 @@ export default function SignUp({currentUser, handleLogout}) {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
     console.log(data)
+
+    if(password !== confirmPassword){
+      handleError("Password and Confirm Password do not match")
+      return;
+    }
+
+    if(password.length < 6){
+      handleError("Please pick a password with at least 6 characters")
+      return;
+    }
 
     try {
       const res = await fetch("http://localhost:8080/signup", {
@@ -111,12 +121,7 @@ export default function SignUp({currentUser, handleLogout}) {
 
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div>
-    {/*     {flashMessages.map((message, index) => (
-          <div key={index}>{message}</div>
-        ))} */}
 
-    </div>
         <Box
           sx={{
             marginTop: 8,
