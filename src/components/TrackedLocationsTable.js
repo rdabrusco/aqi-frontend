@@ -1,10 +1,10 @@
-import {useState, useEffect} from 'react'
+import {useEffect} from 'react'
 import CloseIcon from '@mui/icons-material/Close';
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 
 
-export const TrackedLocationsTable = ({trackedData, getAllTrackedData, getCardColor, setTrackedData, currentUser, setCurrentUser, isLoading, setIsLoading}) => {
+export const TrackedLocationsTable = ({trackedData, getAllTrackedData, getCardColor, currentUser, setCurrentUser, isLoading, setIsLoading}) => {
 
 
     useEffect(() => {
@@ -15,8 +15,6 @@ export const TrackedLocationsTable = ({trackedData, getAllTrackedData, getCardCo
     const handleClick = async (e) => {
         if (isLoading) return;
         setIsLoading(true)
-        // e.preventDefault()
-        // const d = await tracked.find(item => item.name === e.target.parentNode.parentNode.childNodes[0].innerText)
         console.log(trackedData)
         const selectedLocation = currentUser.trackedLocations[e]
         try{
@@ -36,7 +34,6 @@ export const TrackedLocationsTable = ({trackedData, getAllTrackedData, getCardCo
               ...currentUser,
               trackedLocations: res.trackedLocations
             })
-            // getAllTrackedData((td) => td = res.trackedLocations)
           } catch(err){
             
             console.log(err)
