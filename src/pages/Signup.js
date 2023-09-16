@@ -81,7 +81,7 @@ export default function SignUp({currentUser, handleLogout}) {
     }
 
     try {
-      const res = await fetch("https://busy-fish-gown.cyclic.app/signup", {
+      const res = await fetch("http://localhost:3000/signup", {
         method: "POST",
         body: JSON.stringify(Object.fromEntries(data)),
         headers: {
