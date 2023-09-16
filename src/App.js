@@ -38,7 +38,7 @@ function App() {
   useEffect(() => {
     const verifyCookie = async () => {
       console.log(`cookie: ${cookies.token}`)
-      const data = await fetch("http://localhost:3000/", {
+      const data = await fetch("https://busy-fish-gown.cyclic.app/", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -125,7 +125,7 @@ function App() {
       
       console.log(currentLocation)
       try{
-        const response = await fetch("http://localhost:3000/editTrackedLocations", {
+        const response = await fetch("https://busy-fish-gown.cyclic.app/editTrackedLocations", {
           method: "PUT",
           credentials: "include",
           body: JSON.stringify({
@@ -152,7 +152,7 @@ function App() {
 
     const updateSendEmail = async () => {
       try{
-        const response = await fetch("http://localhost:3000/updateSendEmail", {
+        const response = await fetch("https://busy-fish-gown.cyclic.app/updateSendEmail", {
           method: "PUT",
           credentials: "include",
           body: JSON.stringify({
