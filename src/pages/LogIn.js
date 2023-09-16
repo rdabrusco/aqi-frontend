@@ -71,7 +71,7 @@ export default function LogIn({currentUser, handleLogout}) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     try {
-      const res = await fetch("http://localhost:8080/login", {
+      const res = await fetch("http://localhost:3000/login", {
         method: "POST",
         credentials: "include",
         body: JSON.stringify(Object.fromEntries(data)),

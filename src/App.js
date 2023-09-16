@@ -38,7 +38,7 @@ function App() {
   useEffect(() => {
     const verifyCookie = async () => {
       console.log(`cookie: ${cookies.token}`)
-      const data = await fetch("http://localhost:8080/", {
+      const data = await fetch("http://localhost:3000/", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -125,7 +125,7 @@ function App() {
       
       console.log(currentLocation)
       try{
-        const response = await fetch("http://localhost:8080/editTrackedLocations", {
+        const response = await fetch("http://localhost:3000/editTrackedLocations", {
           method: "PUT",
           credentials: "include",
           body: JSON.stringify({
@@ -152,7 +152,7 @@ function App() {
 
     const updateSendEmail = async () => {
       try{
-        const response = await fetch("http://localhost:8080/updateSendEmail", {
+        const response = await fetch("http://localhost:3000/updateSendEmail", {
           method: "PUT",
           credentials: "include",
           body: JSON.stringify({

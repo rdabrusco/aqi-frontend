@@ -18,7 +18,7 @@ export const TrackedLocationsTable = ({trackedData, getAllTrackedData, getCardCo
         console.log(trackedData)
         const selectedLocation = currentUser.trackedLocations[e]
         try{
-            const response = await fetch("http://localhost:8080/editTrackedLocations", {
+            const response = await fetch("http://localhost:3000/editTrackedLocations", {
               method: "PUT",
               credentials: "include",
               body: JSON.stringify({

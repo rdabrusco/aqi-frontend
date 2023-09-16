@@ -81,7 +81,7 @@ export default function SignUp({currentUser, handleLogout}) {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/signup", {
+      const res = await fetch("http://localhost:3000/signup", {
         method: "POST",
         body: JSON.stringify(Object.fromEntries(data)),
         headers: {
