@@ -20,11 +20,12 @@ import DrawerAppBar from '../components/DrawerAppBar';
 
 
 function Copyright(props) {
+  const urlOrigin = window.location.origin
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href={urlOrigin}>
+        AQI Checker
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -36,7 +37,8 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignUp({currentUser, handleLogout}) {
+export default function SignUp({currentUser, handleLogout,}) {
+  const urlOrigin = window.location.origin
     const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     email: "",
@@ -81,7 +83,7 @@ export default function SignUp({currentUser, handleLogout}) {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/signup", {
+      const res = await fetch(`${urlOrigin}/signup`, {
         method: "POST",
         body: JSON.stringify(Object.fromEntries(data)),
         headers: {

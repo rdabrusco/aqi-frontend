@@ -22,10 +22,11 @@ import DrawerAppBar from '../components/DrawerAppBar';
 
 
 function Copyright(props) {
+  const urlOrigin = window.location.origin
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href={urlOrigin}>
         Your Website
       </Link>{' '}
       {new Date().getFullYear()}
@@ -40,6 +41,7 @@ const defaultTheme = createTheme();
 
 export default function LogIn({currentUser, handleLogout}) {
 
+  const urlOrigin = window.location.origin
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     email: "",
@@ -71,7 +73,7 @@ export default function LogIn({currentUser, handleLogout}) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     try {
-      const res = await fetch("http://localhost:3000/login", {
+      const res = await fetch(`${urlOrigin}/login`, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify(Object.fromEntries(data)),
