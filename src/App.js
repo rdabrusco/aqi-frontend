@@ -206,7 +206,6 @@ function App() {
 
     const getAllTrackedData = async () => {
         let allTrackedData = []
-        console.log(`testing getting all tracked data`)
         console.log(currentUser.trackedLocations)
         for(let location of currentUser.trackedLocations){
             console.log(location)

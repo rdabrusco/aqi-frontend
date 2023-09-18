@@ -70,7 +70,6 @@ export default function SignUp({currentUser, handleLogout,}) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget)
-    console.log(data)
 
     if(password !== confirmPassword){
       handleError("Password and Confirm Password do not match")
