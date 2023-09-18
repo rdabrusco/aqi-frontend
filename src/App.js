@@ -269,7 +269,7 @@ function App() {
 
     {currentUser && (
       <>
-       <input type="checkbox" name="sendEmail" checked={currentUser.sendEmail} onChange={handleChange} />
+       <input type="checkbox" name="sendEmail" checked={currentUser.sendEmail} disabled={currentUser.trackedLocations.length === 0} onChange={handleChange} />
        <label htmlFor="sendEmail">Send Email Updates?</label>
       
 
