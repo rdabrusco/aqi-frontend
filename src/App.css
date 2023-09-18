@@ -45,6 +45,12 @@
   color: black;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
 
 @media screen and (max-width: 380px){
   .flex {
