@@ -37,7 +37,6 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
     const verifyCookie = async () => {
-      console.log(`cookie: ${cookies.token}`)
       const data = await fetch(`${urlOrigin}/`, {
         method: "POST",
         credentials: "include",
@@ -47,7 +46,6 @@ function App() {
         }
       })
       const resolvedData = await data.json()
-      console.log(resolvedData)
       const { status, user } = resolvedData;
       console.log(`data: ${data}, status: ${status}, user: ${user}`)
       if(user){

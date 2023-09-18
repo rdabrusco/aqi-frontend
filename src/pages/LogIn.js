@@ -106,10 +106,6 @@ export default function LogIn({currentUser, handleLogout}) {
       // an error occured
       console.log(error)
   } 
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
 
     setInputValue({
       ...inputValue,
