@@ -1,5 +1,6 @@
 import {useEffect} from 'react'
 import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
 import { ToastContainer } from "react-toastify";
 
 
@@ -15,7 +16,6 @@ export const TrackedLocationsTable = ({trackedData, getAllTrackedData, getCardCo
     const handleClick = async (e) => {
         if (isLoading) return;
         setIsLoading(true)
-        console.log(trackedData)
         const selectedLocation = currentUser.trackedLocations[e]
         try{
             const response = await fetch(`${urlOrigin}/editTrackedLocations`, {
@@ -59,11 +59,12 @@ export const TrackedLocationsTable = ({trackedData, getAllTrackedData, getCardCo
                         </thead>
                         <tbody>
                             
-                            {trackedData && (trackedData.map(({location, aqi}, index) => (
+                            {trackedData && (trackedData.map(({location, nickname, aqi}, index) => (
                                 <tr  key={index}>
-                                    <td className={getCardColor(aqi)} >{location}</td>
+                                    <td className={getCardColor(aqi)} >{nickname ? nickname + '/' + location : location}</td>
                                     <td className={getCardColor(aqi)}>{aqi} 
                                     <CloseIcon className="close-btn" fontSize="small" onClick={() => handleClick(index)} />
+                                    <EditIcon className="edit-btn" fontSize="small" />
                                     </td>
                                 </tr>
                             )))}

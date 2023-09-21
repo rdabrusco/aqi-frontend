@@ -45,6 +45,12 @@
   color: black;
 }
 
+.edit-btn {
+  position: absolute;
+  left: -2px;
+  color: black;
+}
+
 .center {
   display: flex;
   justify-content: center;

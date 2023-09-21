@@ -215,13 +215,14 @@ function App() {
                 console.log(data)
                 allTrackedData.push({
                     location: location.name,
-                    aqi: data.data.aqi
+                    aqi: data.data.aqi,
+                    nickname: location.nickname || ""
                 })
             } catch(err){
                 console.log(err)
             }
         }
-
+        console.log(allTrackedData)
         setTrackedData(allTrackedData)
         setIsLoading(false)
         
